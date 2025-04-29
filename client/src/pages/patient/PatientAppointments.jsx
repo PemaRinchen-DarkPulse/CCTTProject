@@ -107,6 +107,7 @@ const PatientAppointments = () => {
   const [specialties, setSpecialties] = useState([]);
   const [locations, setLocations] = useState([]);
   const [error, setError] = useState(null);
+  const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   useEffect(() => {
     fetchProviders();
@@ -121,7 +122,7 @@ const PatientAppointments = () => {
   const fetchProviders = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('http://localhost:5000/api/doctors');
+      const response = await fetch(`${BASE_URL}/api/doctors`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch providers');
@@ -174,7 +175,7 @@ const PatientAppointments = () => {
         return;
       }
       
-      const response = await fetch('http://localhost:5000/api/appointments/patient', {
+      const response = await fetch(`${BASE_URL}/api/appointments/patient`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -219,7 +220,7 @@ const PatientAppointments = () => {
         return;
       }
       
-      const response = await fetch('http://localhost:5000/api/appointments/patient', {
+      const response = await fetch(`${BASE_URL}/api/appointments/patient`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -354,7 +355,7 @@ const PatientAppointments = () => {
         
         const formattedDate = selectedDate.toISOString().split('T')[0];
         
-        const response = await fetch(`http://localhost:5000/api/doctors/${selectedProvider.id}/availability?date=${formattedDate}`);
+        const response = await fetch(`${BASE_URL}/api/doctors/${selectedProvider.id}/availability?date=${formattedDate}`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch time slots');

@@ -47,13 +47,14 @@ const ProtectedRoute = ({ children }) => {
 const EmailVerificationHandler = () => {
   const { search, pathname } = window.location;
   const token = pathname.split('/').pop();
+  const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
   
   React.useEffect(() => {
     // The backend already handles the redirect, so we shouldn't need to do anything here
     // This component now serves as a loading screen while the backend processes the verification
     
     // For better UX, we can directly redirect to the backend verification endpoint
-    window.location.href = `http://localhost:5000/api/auth/verify/${token}`;
+    window.location.href = `${BASE_URL}/api/auth/verify/${token}`;
     
     // The backend will redirect to /login?verification=success or /login?verification=failed
   }, [token]);

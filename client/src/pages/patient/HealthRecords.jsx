@@ -52,7 +52,8 @@ const HealthRecords = () => {
           'Authorization': `Bearer ${token}`
         };
         
-        const API_BASE_URL = 'http://localhost:5000/api/patient';
+        const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const API_BASE_URL = `${BASE_URL}/api/patient`;
         
         try {
           // Fetch all data in parallel for better performance

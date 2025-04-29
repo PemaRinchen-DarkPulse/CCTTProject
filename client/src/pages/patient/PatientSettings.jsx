@@ -8,6 +8,9 @@ import NotificationToggle from '../../components/forms/NotificationToggle';
 import TeleconsultationPreferenceForm from '../../components/forms/TeleconsultationPreferenceForm';
 import MedicalInfoForm from '../../components/forms/MedicalInfoForm';
 
+// Get base API URL from environment variables
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const PatientSettings = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
@@ -41,7 +44,7 @@ const PatientSettings = () => {
       setLoading(true);
       const token = localStorage.getItem('token');
       
-      const response = await axios.get('http://localhost:5000/api/patient/settings/profile', {
+      const response = await axios.get(`${BASE_URL}/api/patient/settings/profile`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -61,7 +64,7 @@ const PatientSettings = () => {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await axios.get('http://localhost:5000/api/patient/settings/notifications', {
+      const response = await axios.get(`${BASE_URL}/api/patient/settings/notifications`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -78,7 +81,7 @@ const PatientSettings = () => {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await axios.get('http://localhost:5000/api/patient/settings/teleconsultation', {
+      const response = await axios.get(`${BASE_URL}/api/patient/settings/teleconsultation`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -95,7 +98,7 @@ const PatientSettings = () => {
     try {
       const token = localStorage.getItem('token');
       
-      const response = await axios.get('http://localhost:5000/api/patient/settings/medicalinfo', {
+      const response = await axios.get(`${BASE_URL}/api/patient/settings/medicalinfo`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -117,7 +120,7 @@ const PatientSettings = () => {
       const token = localStorage.getItem('token');
       
       const response = await axios.put(
-        'http://localhost:5000/api/patient/settings/profile',
+        `${BASE_URL}/api/patient/settings/profile`,
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -144,7 +147,7 @@ const PatientSettings = () => {
       const token = localStorage.getItem('token');
       
       const response = await axios.put(
-        'http://localhost:5000/api/patient/settings/notifications',
+        `${BASE_URL}/api/patient/settings/notifications`,
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -171,7 +174,7 @@ const PatientSettings = () => {
       const token = localStorage.getItem('token');
       
       const response = await axios.put(
-        'http://localhost:5000/api/patient/settings/teleconsultation',
+        `${BASE_URL}/api/patient/settings/teleconsultation`,
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -198,7 +201,7 @@ const PatientSettings = () => {
       const token = localStorage.getItem('token');
       
       const response = await axios.put(
-        'http://localhost:5000/api/patient/settings/medicalinfo',
+        `${BASE_URL}/api/patient/settings/medicalinfo`,
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );

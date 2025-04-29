@@ -1,6 +1,9 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { toast } from 'react-toastify';
 
+// Get base API URL from environment variables
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 // Create the auth context
 const AuthContext = createContext(null);
 
@@ -21,7 +24,7 @@ export const AuthProvider = ({ children }) => {
         }
         
         // Verify token with backend
-        const response = await fetch('http://localhost:5000/api/auth/me', {
+        const response = await fetch(`${BASE_URL}/api/auth/me`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -49,7 +52,7 @@ export const AuthProvider = ({ children }) => {
   // Login function
   const login = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +100,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       // Call backend logout endpoint if you have one
-      await fetch('http://localhost:5000/api/auth/logout', {
+      await fetch(`${BASE_URL}/api/auth/logout`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -130,7 +133,7 @@ export const AuthProvider = ({ children }) => {
   // Register function
   const register = async (userData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(`${BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

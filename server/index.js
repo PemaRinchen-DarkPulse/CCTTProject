@@ -17,9 +17,27 @@ const patientSettingsRoutes = require('./routes/patientSettingsRoutes');
 const app = express();
 
 // Configure CORS to allow credentials and specific origins
+const allowedOrigins = [
+  'http://localhost:5173',         // Local development frontend
+  'http://13.232.90.30',           // AWS IP frontend without port
+  'http://13.232.90.30:5173',      // AWS IP frontend with Vite default port
+  'http://13.232.90.30:80',        // AWS IP frontend with HTTP port
+  'http://13.232.90.30:3000'       // AWS IP frontend with alternate port
+];
+
 app.use(cors({
-  origin: 'http://localhost:5173', // Your frontend origin
-  credentials: true,               // Allow credentials (cookies, auth headers)
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      console.log('Blocked by CORS:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -46,7 +64,7 @@ app.use('/api/settings', doctorSettingsRoutes);
 app.use('/api/patient/settings', patientSettingsRoutes);
 
 // Test route
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
   res.send('AiMediCare API is running!');
 });
 
@@ -61,13 +79,14 @@ app.use((err, req, res, next) => {
 
 // Connect to MongoDB and start server
 const PORT = process.env.PORT || 5000;
+const HOST = process.env.HOST || '0.0.0.0'; // Listen on all network interfaces
 
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB');
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+    app.listen(PORT, HOST, () => {
+      console.log(`Server running on ${HOST}:${PORT}`);
     });
   })
   .catch((err) => {
